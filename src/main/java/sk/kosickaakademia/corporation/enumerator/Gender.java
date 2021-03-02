@@ -1,5 +1,5 @@
 package sk.kosickaakademia.corporation.enumerator;
 
-public class Gender {
+public enum Gender {
     MALE, FEMALE, OTHER,
 }
