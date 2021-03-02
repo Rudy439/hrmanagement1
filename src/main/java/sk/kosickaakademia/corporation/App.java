@@ -1,4 +1,4 @@
-package org.example;
+package sk.kosickaakademia.corporation;
 
 /**
  * Hello world!
