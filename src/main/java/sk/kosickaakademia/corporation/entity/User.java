@@ -3,9 +3,16 @@ package sk.kosickaakademia.corporation.entity;
 import sk.kosickaakademia.corporation.enumerator.Gender;
 
 public class User {
-    private int id;
 
-    public User(int id, String fname, String lname, int age, int gender) {
+
+    private int id;
+    private String fname;
+
+    private String lname;
+    private int age;
+    private Gender gender;
+
+    public User(int id, String fname,String lname,int age,int gender ) {
         this (fname, lname, age, gender); //naraz volam konstruktor so styrmi parametrami
         this.id = id;
     }
@@ -17,7 +24,9 @@ public class User {
         this.gender = gender ==0?Gender.MALE : gender==1 ? Gender.FEMALE :Gender.OTHER;
     }
 
-    private String fname;
+    public int getId() {
+        return id;
+    }
 
     public String getFname() {
         return fname;
@@ -35,8 +44,17 @@ public class User {
         return gender;
     }
 
-    private String lname;
-    private int age;
-    private Gender gender;
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
+                '}';
+    }
 
 }
