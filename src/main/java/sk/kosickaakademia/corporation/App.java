@@ -1,5 +1,6 @@
 package sk.kosickaakademia.corporation;
 
+import org.springframework.boot.SpringApplication;
 import sk.kosickaakademia.corporation.database.Database;
 import sk.kosickaakademia.corporation.entity.User;
 import sk.kosickaakademia.corporation.util.Util;
@@ -13,9 +14,9 @@ import java.util.List;
 public class App 
 {
     public static void main( String[] args )
-    {
+    { SpringApplication.run(App.class,args);
 
-        System.out.println( "Hello World!" );
+        /*System.out.println( "Hello World!" );
         Database db = new Database();
         db.getConnection();
         //db.insertNewUser(new User (" Rudolf, Mrkva, 40, 0 "));
@@ -25,7 +26,7 @@ public class App
         System.out.println(text);
 
         //for(User u:list)
-            //System.out.println(new Util().getJson(u));
+            //System.out.println(new Util().getJson(u));*/
 
     }
 }
