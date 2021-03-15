@@ -65,11 +65,22 @@ public class Controller {
         String json = new Util.getJson(list)*/
 
     @GetMapping(path = "/user/age")
-    public ResponseEntity<String> getUsersAge(@RequestParam(value ="from") int from,
+    public ResponseEntity<String> getUserAge(@RequestParam(value ="from") int from,
         @RequestParam(value = "to") int to){
         Util util = new Util();
         String response = util.getJson(new Database().getUsersByAge(from,to));
         return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(null);
     }
+    @GetMapping(path = "/users/age")
+    public ResponseEntity<String> getUsersAge(@RequestParam(value ="from") int from, @RequestParam(value = "to") int to){
+        if(from>to || from<1 ) {
 
-}
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("null");
+        }
+       List<User> list = new Database().getUsersByAge(from, to);
+        for(User user:list)
+            System.out.println(user);
+        String json = new Util().getJson(list);
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
+
+}}
