@@ -18,7 +18,7 @@ public class Database {
 
     Log log = new Log();
     private final String INSERTQUERY = "INSERT INTO user (fname, lname, age, gender) " +
-            "VALUES ( ?, ?, ?, ?,) ";
+            "VALUES ( ?, ?, ?, ?) ";
 
 public Connection getConnection() {
     try{
