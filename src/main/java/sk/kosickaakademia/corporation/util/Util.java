@@ -3,6 +3,7 @@ package sk.kosickaakademia.corporation.util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sk.kosickaakademia.corporation.entity.User;
+import sk.kosickaakademia.corporation.enumerator.Gender;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class Util {
     public String getJson(List<User> list) {
-        if(list.isEmpty()) return "{}";
+        if(list==null || list.isEmpty()) return "{}";
         JSONObject object = new JSONObject();
         object.put("datatime", getCurrentDateTime());
         object.put("size", list.size());
@@ -57,4 +58,32 @@ public class Util {
         name=name.trim();
         return Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase();
     }
+    public String getOverview(List<User> list) {
+        int count = list.size();
+        int male = 0;
+        int female = 0;
+        int sumage = 0;
+        //ternárny operátor
+        int min = count>0? list.get(0).getAge():0;
+        int max = count>0? list.get(0).getAge():0;
+        for(User u : list){
+            if(u.getGender() == Gender.MALE) male++;
+            else if (u.getGender() == Gender.FEMALE) female++;
+            sumage+=u.getAge();
+            if(min>u.getAge())
+                min=u.getAge();
+            if(max<u.getAge())
+                max=u.getAge();
+        }
+        double avg=(double) sumage/count;
+        JSONObject object = new JSONObject();
+        object.put("count",count);
+        object.put("min",min);
+        object.put("max",max);
+        object.put("countMale",male);
+        object.put("countFemale",female);
+        object.put("averageAge",avg);
+        return object.toJSONString();
+    }
+
 }

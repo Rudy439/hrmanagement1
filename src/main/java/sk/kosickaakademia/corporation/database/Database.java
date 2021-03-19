@@ -1,5 +1,6 @@
 package sk.kosickaakademia.corporation.database;
 
+import sk.kosickaakademia.corporation.entity.Overview;
 import sk.kosickaakademia.corporation.entity.User;
 import sk.kosickaakademia.corporation.log.Log;
 
@@ -182,4 +183,9 @@ public void closeConnection (Connection con){
 
         }
         return false;
-    }}
+    }
+    public List<User> getUser(String pattern){
+
+        return null;}
+
+}

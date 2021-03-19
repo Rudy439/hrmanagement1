@@ -83,4 +83,24 @@ public class Controller {
         String json = new Util().getJson(list);
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
 
-}}
+}
+    @GetMapping(path = "/user/{id}")
+    public ResponseEntity<String> changeAge (@PathVariable Integer id, @RequestBody String body ) throws ParseException {
+        JSONObject object = (JSONObject) new JSONParser().parse(body);
+        Integer newage = (Integer) object.get("age");
+        if(newage==null || newage<1)
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("{}");
+        boolean result = new Database().changeAge(id,newage);
+        int status;
+
+        return null;
+
+    }
+    @GetMapping (path = "/")
+        public ResponseEntity<String> overview(){
+        List<User> list = new Database().getAllUsers();
+        String jsonOverview = new Util().getOverview(list);
+            return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(jsonOverview.toString());
+        }
+
+}
