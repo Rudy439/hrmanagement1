@@ -4,21 +4,29 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sk.kosickaakademia.corporation.log.Log;
 import sk.kosickaakademia.corporation.util.Util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class SecretController {
     private final String PASSWORD = "Kosice2021";
-    Map<String,String>
+    Map<String,String> map = new HashMap<>();
     Log log = new Log();
+
     @GetMapping(path = "/secret")
-    public String secret(){
-        return"secret";
+    public String secret(@RequestHeader("token") String header){
+        System.out.println(header);
+        String token = header.substring(7);
+        for(Map.Entry<String,String> entry: map.entrySet()){
+            if(entry.getValue().equalsIgnoreCase(token)){
+                return "secret";
+            }
+        }
+        return"401";
     }
     @PostMapping(path = "/login")
     public ResponseEntity<String> login (@RequestBody String auth){
