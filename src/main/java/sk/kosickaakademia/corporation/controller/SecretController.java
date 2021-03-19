@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sk.kosickaakademia.corporation.log.Log;
+import sk.kosickaakademia.corporation.util.Util;
 
 @RestController
 public class SecretController {
     private final String PASSWORD = "Kosice2021";
+    Map<String,String>
     Log log = new Log();
     @GetMapping(path = "/secret")
     public String secret(){
@@ -31,7 +33,12 @@ public class SecretController {
                 return ResponseEntity.status(400).body("");
             }
             if (password.equals(PASSWORD)) {
+                String token = new Util().generateToken();
+                map.pit(login,token);
                 log.print("User logged");
+                JSONObject obj = new JSONObject();
+                obj.put("login",login);
+                obj.put("token","Bearer"+token);
                 return ResponseEntity.status(200).body("");
             } else {
                 log.error("Wrong password");

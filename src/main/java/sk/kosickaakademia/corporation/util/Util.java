@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Util {
     public String getJson(List<User> list) {
@@ -84,6 +85,19 @@ public class Util {
         object.put("countFemale",female);
         object.put("averageAge",avg);
         return object.toJSONString();
+    }
+    public String generateToken(){
+        String token="";
+        Random rand = new Random();
+        for(int i=0;i<40;i++){
+            int x=rand.nextInt(3);
+            switch(x){
+                case 0: token=token+(char)(rand.nextInt(26)+65);break;
+                case 1: token=token+(char)(rand.nextInt(26)+97);break;
+                case 2: token=token+(char)(rand.nextInt(10)+48);break;
+            }
+        }
+        return token;
     }
 
 }
