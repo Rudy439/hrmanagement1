@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class Database {
+public class DatabaseMysql {
     /* private String url = "jdbc:mysql://itsovy.sk:3306/company";
     private String username = "mysqluser";
     private String password = "Kosice2021!"; */
@@ -132,13 +132,14 @@ public void closeConnection (Connection con){
 
     public List<User> getUsersById(int Id) {
 
-        List<User> list = new ArrayList<>();
+
         Connection con = getConnection();
 
         if (con!= null) {
              String sql = "SELECT * FROM user WHERE id = ?";
             try {
                 PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1,Id);
                 List<User> list = executeSelect(ps);
                 User user = null;
 

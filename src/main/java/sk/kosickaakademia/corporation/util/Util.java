@@ -86,7 +86,7 @@ public class Util {
         object.put("averageAge",avg);
         return object.toJSONString();
     }
-    public String generateToken(){
+    public String generateToken(){  //Token ma 40 znakov male,velké pismena a čísla
         String token="";
         Random rand = new Random();
         for(int i=0;i<40;i++){

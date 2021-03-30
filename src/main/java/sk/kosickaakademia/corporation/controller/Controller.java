@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.kosickaakademia.corporation.database.Database;
+import sk.kosickaakademia.corporation.database.DatabaseMysql;
 import sk.kosickaakademia.corporation.entity.User;
 import sk.kosickaakademia.corporation.enumerator.Gender;
 import sk.kosickaakademia.corporation.log.Log;
@@ -44,7 +44,7 @@ public class Controller {
             }else g=Gender.OTHER;
 
             User user = new User(fname,lname,age,g.getValue());
-            new Database().insertNewUser(user);
+            new DatabaseMysql().insertNewUser(user);
 
 
 
@@ -59,16 +59,19 @@ public class Controller {
         }
         return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(null);
     }
-    /*@GetMapping("/user")
+    @GetMapping("/users") //metóda vracia všetkých používateľov
     public ResponseEntity<String> getAllUsers(){
-        List<User> list = new Database().getAllUsers();
-        String json = new Util.getJson(list)*/
+        List<User> list = new DatabaseMysql().getAllUsers();
+        String json = new Util().getJson(list);
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
+    }
 
-    @GetMapping(path = "/user/age")
+
+    @GetMapping(path = "/user/age") // metoda vracia použivatela podla veku
     public ResponseEntity<String> getUserAge(@RequestParam(value ="from") int from,
         @RequestParam(value = "to") int to){
         Util util = new Util();
-        String response = util.getJson(new Database().getUsersByAge(from,to));
+        String response = util.getJson(new DatabaseMysql().getUsersByAge(from,to));
         return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body(null);
     }
     @GetMapping(path = "/users/age")
@@ -77,20 +80,20 @@ public class Controller {
 
             return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("null");
         }
-       List<User> list = new Database().getUsersByAge(from, to);
+       List<User> list = new DatabaseMysql().getUsersByAge(from, to);
         for(User user:list)
             System.out.println(user);
         String json = new Util().getJson(list);
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
 
 }
-    @GetMapping(path = "/user/{id}")
+    @GetMapping(path = "/user/{id}") //vracia Json format na základe špecifickeho id najde a vráti použivatela ak neexistuje vrati 40O zle zapísana požiadavka
     public ResponseEntity<String> changeAge (@PathVariable Integer id, @RequestBody String body ) throws ParseException {
         JSONObject object = (JSONObject) new JSONParser().parse(body);
         Integer newage = (Integer) object.get("age");
         if(newage==null || newage<1)
             return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("{}");
-        boolean result = new Database().changeAge(id,newage);
+        boolean result = new DatabaseMysql().changeAge(id,newage);
         int status;
 
         return null;
@@ -98,7 +101,7 @@ public class Controller {
     }
     @GetMapping (path = "/")
         public ResponseEntity<String> overview(){
-        List<User> list = new Database().getAllUsers();
+        List<User> list = new DatabaseMysql().getAllUsers();
         String jsonOverview = new Util().getOverview(list);
             return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(jsonOverview.toString());
         }

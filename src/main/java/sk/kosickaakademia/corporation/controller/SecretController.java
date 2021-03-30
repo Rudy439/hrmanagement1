@@ -14,23 +14,24 @@ import java.util.Map;
 @RestController
 public class SecretController {
     private final String PASSWORD = "Kosice2021";
-    Map<String,String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
     Log log = new Log();
 
     @GetMapping(path = "/secret")
-    public String secret(@RequestHeader("token") String header){
+    public String secret(@RequestHeader("token") String header) {
         System.out.println(header);
         String token = header.substring(7);
-        for(Map.Entry<String,String> entry: map.entrySet()){
-            if(entry.getValue().equalsIgnoreCase(token)){
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(token)) {
                 return "secret";
             }
         }
-        return"401";
+        return "401";
     }
+
     @PostMapping(path = "/login")
-    public ResponseEntity<String> login (@RequestBody String auth){
-        JSONObject object =null;
+    public ResponseEntity<String> login(@RequestBody String auth) {
+        JSONObject object = null;
         try {
             object = (JSONObject) new JSONParser().parse(auth);
             String login = ((String) object.get("login"));
@@ -42,11 +43,11 @@ public class SecretController {
             }
             if (password.equals(PASSWORD)) {
                 String token = new Util().generateToken();
-                map.pit(login,token);
+                map.put(login, token);
                 log.print("User logged");
                 JSONObject obj = new JSONObject();
-                obj.put("login",login);
-                obj.put("token","Bearer"+token);
+                obj.put("login", login);
+                obj.put("token", "Bearer" + token);
                 return ResponseEntity.status(200).body("");
             } else {
                 log.error("Wrong password");
@@ -60,4 +61,20 @@ public class SecretController {
         return null;
     }
 
+    @RequestMapping(path ="/user/logout", method = RequestMethod.DELETE)
+    public ResponseEntity<String> logout(@RequestBody String auth) {
+        JSONObject obj = null;
+
+        try {
+            obj = (JSONObject) new JSONParser().parse(auth);
+            String login = ((String) obj.get("login"));
+
+            return ResponseEntity.status(200).body("Logout Successfully!");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Logout Unsuccessfully");
+        }
+
+    }
 }
